@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>URL Shortener</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="form-group" >
+      <h1>URL Shortener</h1>
+      <br>
+      <form action="" method="post" name="shorten-url">
+        {{ form.hidden_tag() }}
+        <p>
+            Please enter your url to shorten:<br>
+            {{ form.url(size=80) }}<br>
+        </p>
+        {% for error in form.url.errors %}
+          <p><span>{{ error }}</span></p>
+        {% endfor %}
+        <p><input type="submit" value="Shorten URL!"></p>
+      </form>
+      {% if url_shortened %}
+        <p>The shortened url is <a href="{{ url_shortened }}">{{ url_shortened }}</a>.
+      {% endif %}
+    </div>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
