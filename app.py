@@ -27,6 +27,7 @@ def id_generator(size=8, chars=string.ascii_uppercase + string.ascii_lowercase +
 
 def remove_slashes(url):
     return url.split('//')[1]
+
 ################################## ROUTES ######################################
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -40,7 +41,7 @@ def index():
                 site_address=os.environ['SITE_ADDRESS'])
         else:
             id = id_generator()
-            while not URL.query.filter_by(url_shortened=id).first():
+            while URL.query.filter_by(url_shortened=id).first():
                 id = id_generator()
             new_url = URL(url=url, url_shortened=id)
             db.session.add(new_url)
