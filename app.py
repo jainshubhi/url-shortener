@@ -25,16 +25,12 @@ from forms import URLShortenerForm
 def id_generator(size=8, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
-# take only important part of url
-def remove_slashes(url):
-    return url.split('//')[1]
-
 ################################## ROUTES ######################################
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = URLShortenerForm()
     if form.validate_on_submit():
-        url = remove_slashes(form.url.data)
+        url = form.url.data
         existing_url = URL.query.filter_by(url=url).first()
         if existing_url:
             # url is already in db so serve that shortened url
@@ -60,7 +56,7 @@ def url(url):
     existing_url = URL.query.filter_by(url_shortened=url).first()
     # if shortened url exists
     if existing_url:
-        return redirect('https://' + existing_url.url)
+        return redirect(existing_url.url)
     # redirect to mainpage if this is a random url
     else:
         return redirect(url_for('index'))
