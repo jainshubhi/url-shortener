@@ -40,10 +40,10 @@ def index():
                 url_shortened=existing_url.url_shortened,
                 site_address=os.environ['SITE_ADDRESS'])
         else:
-            id = id_generator()
-            while URL.query.filter_by(url_shortened=id).first():
-                id = id_generator()
-            new_url = URL(url=url, url_shortened=id)
+            le_id = id_generator()
+            while URL.query.filter_by(url_shortened=le_id).first():
+                le_id = id_generator()
+            new_url = URL(url=url, url_shortened=le_id)
             db.session.add(new_url)
             db.session.commit()
             return render_template('index.html', form=form,
@@ -55,7 +55,7 @@ def index():
 def url(url):
     existing_url = URL.query.filter_by(url_shortened=url).first()
     if existing_url:
-        return redirect(existing_url.url)
+        return redirect('https://' + existing_url.url)
     else:
         return redirect(url_for('index'))
 
