@@ -13,6 +13,7 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
 
 from models import URL
+from forms import URLShortenerForm
 ################################## ROUTES ######################################
 @app.route('/')
 def index():
