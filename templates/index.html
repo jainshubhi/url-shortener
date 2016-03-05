@@ -21,7 +21,7 @@
         <p><input type="submit" value="Shorten URL!"></p>
       </form>
       {% if url_shortened %}
-        <p>The shortened url is <a href="{{ url_shortened }}">{{ site_address }}{{ url_shortened }}</a>.
+        <p>The shortened url is <a href="{{ url_shortened }}" target="_blank">{{ site_address }}{{ url_shortened }}</a>.
       {% endif %}
     </div>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>

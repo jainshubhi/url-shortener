@@ -25,19 +25,24 @@ from forms import URLShortenerForm
 def id_generator(size=8, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+def remove_slashes(url):
+    return url.split('//')[1]
 ################################## ROUTES ######################################
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = URLShortenerForm()
     if form.validate_on_submit():
-        url = form.url.data
+        url = remove_slashes(form.url.data)
         existing_url = URL.query.filter_by(url=url).first()
         if existing_url:
             return render_template('index.html', form=form,
                 url_shortened=existing_url.url_shortened,
                 site_address=os.environ['SITE_ADDRESS'])
         else:
-            new_url = URL(url=url, url_shortened=id_generator())
+            id = id_generator()
+            while not URL.query.filter_by(url_shortened=id).first():
+                id = id_generator()
+            new_url = URL(url=url, url_shortened=id)
             db.session.add(new_url)
             db.session.commit()
             return render_template('index.html', form=form,
