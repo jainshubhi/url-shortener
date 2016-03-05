@@ -33,12 +33,16 @@ def index():
         url = form.url.data
         existing_url = URL.query.filter_by(url=url).first()
         if existing_url:
-            return render_template('index.html', form=form, url_shortened=existing_url.url_shortened)
+            return render_template('index.html', form=form,
+                url_shortened=existing_url.url_shortened,
+                site_address=os.environ['SITE_ADDRESS'])
         else:
             new_url = URL(url=url, url_shortened=id_generator())
             db.session.add(new_url)
             db.session.commit()
-            return render_template('index.html', form=form, url_shortened=new_url.url_shortened)
+            return render_template('index.html', form=form,
+                url_shortened=new_url.url_shortened,
+                site_address=os.environ['SITE_ADDRESS'])
     return render_template('index.html', form=form)
 
 @app.route('/<url>')
